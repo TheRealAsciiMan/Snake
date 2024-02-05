@@ -14,7 +14,24 @@ class Main():
         self.direction = None
 
     def dessine_damier(self):
-        self.blit
+        i = 0
+        longueur = 0
+        hauteur = 0
+        clair = (144, 238, 144)
+        fonce = (0, 100, 0)
+        while hauteur < self.haut:
+            while longueur < self.long:
+                if i%2 == 0 :
+                    pygame.draw.rect(self.surf, clair, (longueur, hauteur, longueur + 20, hauteur + 20))
+                    pygame.draw.rect(self.surf, fonce, (longueur + 20, hauteur, longueur + 40, hauteur + 20))
+                else :
+                    pygame.draw.rect(self.surf, fonce, (longueur, hauteur, longueur + 20, hauteur + 20))
+                    pygame.draw.rect(self.surf, clair, (longueur + 20, hauteur, longueur + 40, hauteur + 20))
+                longueur += 40
+            longueur = 0
+            hauteur += 20
+        pygame.display.flip()
+
     def play(self):
         while self.run:
             for event in pygame.event.get():
@@ -24,4 +41,5 @@ class Main():
         pygame.quit()
 
 Game1 = Main()
+Game1.dessine_damier()
 Game1.play()

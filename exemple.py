@@ -37,15 +37,19 @@ while run:
     if h < 0:
         print("Game Over")
         l, h = long // 2, haut // 2
+        direction = None
     if h > haut - hsnake:
         print("Game Over")
         l, h = long // 2, haut // 2
+        direction = None
     if l > long - lsnake:
         print("Game Over")
         l, h = long // 2, haut // 2
+        direction = None
     if l < 0:
         print("Game Over")
         l, h = long // 2, haut // 2
+        direction = None
 
     clock.tick(240)
     surf.fill((0,0,0))
