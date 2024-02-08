@@ -28,6 +28,20 @@ class Main():
             longueur = 0
             hauteur += 20
 
+    class Anneau():
+        def __init__(self):
+            self.suivant = None
+            self.long = 0
+            self.haut = 0
+            self.nextlong = 0
+            self.nexthaut = 0
+        def basculer(self):
+            self.long = self.nextlong
+            self.haut = self.nexthaut
+        def dessin(self):
+            return pygame.draw.rect(self.surf, (82, 130, 238), (self.long, self.haut, self.lsnake, self.hsnake))
+
+
     def play(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
