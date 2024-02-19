@@ -18,21 +18,25 @@ def dessine_serpent():
             run = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                direction = "up"
+                if direction != "down":
+                    direction = "up"
             if event.key == pygame.K_DOWN:
-                direction = "down"
+                if direction != "up":
+                    direction = "down"
             if event.key == pygame.K_LEFT:
-                direction = "left"
+                if direction != "right":
+                    direction = "left"
             if event.key == pygame.K_RIGHT:
-                direction = "right"
+                if direction != "left":
+                    direction = "right"
     if direction == "up":
-        h -= 1
+        h -= 5
     if direction == "down":
-        h += 1
+        h += 5
     if direction == "right":
-        l += 1
+        l += 5
     if direction == "left":
-        l -= 1
+        l -= 5
     if h < 0:
         print("Game Over")
         l, h = long // 2, haut // 2
@@ -68,7 +72,7 @@ def dessine_damier():
 
 
 while run:
-    clock.tick(240)
+    clock.tick(60)
     dessine_damier()
     dessine_serpent()
     pygame.display.flip()

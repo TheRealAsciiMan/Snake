@@ -5,24 +5,32 @@ haut= 720
 surf = pygame.display.set_mode((long,haut))
 run = True
 clock = pygame.time.Clock()
-l = long // 2
-h = haut // 2
+centerl = long // 2
+centerh = haut // 2
 lsnake = 20
 hsnake = 20
 direction = None
 
+
+
 class Anneau:
-    def __init__(self, suivant=None, larg=0, haut=0, flarg=0, fhaut=0):
+    def __init__(self, suivant=None, larg=-50, haut=-50, flarg=-50, fhaut=-50, head=False):
         self.suivant = suivant
         self.larg = larg
         self.haut = haut
         self.flarg = flarg
         self.fhaut = fhaut
+        self.head = head
     def turn(self):
-        self.larg = self.flarg
-        self.haut = self.fhaut
-    def show(self, surf, lsnake, hsnake):
-        pygame.draw.rect(surf, (78, 124, 246), (self.larg, self.haut, lsnake, hsnake))
+        if head == False:
+            self.larg = self.flarg
+            self.haut = self.fhaut
+    def show(self):
+        dessine_serpent(self.larg, self.haut, lsnake, hsnake)
+    def predict(self):
+        if head == False:
+            self.flarg = self.suivant.larg
+            self.fhaut = self.suivant.haut
 
 class Serpent:
     def __init__(self, head):
@@ -30,51 +38,21 @@ class Serpent:
         self.rings = []
         self.rings.append(self.head)
     def update(self):
-        for i in range(len(self.rings)):
-            self.rings[i].turn()
+        for ring in self.rings:
+            ring.predict()
+            ring.turn()
+    def show(self):
+        for ring in self.rings:
+            ring.show()
 
 
+def eat(serp):
+    for i in range(30):
+        serp.rings.append(Anneau(serp.rings[-1]))
 
 
-def dessine_serpent():
-    global l, h, direction, run
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                direction = "up"
-            if event.key == pygame.K_DOWN:
-                direction = "down"
-            if event.key == pygame.K_LEFT:
-                direction = "left"
-            if event.key == pygame.K_RIGHT:
-                direction = "right"
-    if direction == "up":
-        h -= 1
-    if direction == "down":
-        h += 1
-    if direction == "right":
-        l += 1
-    if direction == "left":
-        l -= 1
-    if h < 0:
-        print("Game Over")
-        l, h = long // 2, haut // 2
-        direction = None
-    if h > haut - hsnake:
-        print("Game Over")
-        l, h = long // 2, haut // 2
-        direction = None
-    if l > long - lsnake:
-        print("Game Over")
-        l, h = long // 2, haut // 2
-        direction = None
-    if l < 0:
-        print("Game Over")
-        l, h = long // 2, haut // 2
-        direction = None
-    pygame.draw.rect(surf, (78, 124, 246), (l, h, lsnake, hsnake))
+def dessine_serpent(posl, posh, largsnake, hautsnake):
+    pygame.draw.rect(surf, (78, 124, 246), (posl, posh, largsnake, hautsnake))
 
 def dessine_damier():
     longueur = 0
@@ -91,10 +69,54 @@ def dessine_damier():
         longueur = 0
         hauteur += 20
 
+head = Anneau(suivant=None, larg=centerl, haut=centerh, flarg=centerl, fhaut=centerh, head=True)
+snake = Serpent(head)
+eat(snake)
 
 while run:
-    clock.tick(240)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                if direction != "down":
+                    direction = "up"
+            if event.key == pygame.K_DOWN:
+                if direction != "up":
+                    direction = "down"
+            if event.key == pygame.K_LEFT:
+                if direction != "right":
+                    direction = "left"
+            if event.key == pygame.K_RIGHT:
+                if direction != "left":
+                    direction = "right"
+    if direction == "up":
+        head.haut -= 5
+    if direction == "down":
+        head.haut += 5
+    if direction == "right":
+        head.larg += 5
+    if direction == "left":
+        head.larg -= 5
+    if head.haut < 0:
+        print("Game Over")
+        head.larg, head.haut = long // 2, haut // 2
+        direction = None
+    if head.haut > haut - hsnake:
+        print("Game Over")
+        head.larg, head.haut = long // 2, haut // 2
+        direction = None
+    if head.larg > long - lsnake:
+        print("Game Over")
+        head.larg, head.haut = long // 2, haut // 2
+        direction = None
+    if head.larg < 0:
+        print("Game Over")
+        head.larg, head.haut = long // 2, haut // 2
+        direction = None
+    clock.tick(60)
     dessine_damier()
-    dessine_serpent()
+    snake.update()
+    snake.show()
     pygame.display.flip()
 pygame.quit()
