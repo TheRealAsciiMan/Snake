@@ -14,23 +14,22 @@ direction = None
 
 
 class Anneau:
-    def __init__(self, suivant=None, larg=-50, haut=-50, flarg=-50, fhaut=-50, head=False):
+    def __init__(self, suivant=None, larg=-50, haut=-50, flarg=-50, fhaut=-50):
         self.suivant = suivant
         self.larg = larg
         self.haut = haut
         self.flarg = flarg
         self.fhaut = fhaut
-        self.head = head
     def turn(self):
-        if head == False:
+        if direction != None:
             self.larg = self.flarg
             self.haut = self.fhaut
     def show(self):
         dessine_serpent(self.larg, self.haut, lsnake, hsnake)
     def predict(self):
-        if head == False:
-            self.flarg = self.suivant.larg
-            self.fhaut = self.suivant.haut
+        if self.suivant != None:
+            self.suivant.flarg = self.larg
+            self.suivant.fhaut = self.haut
 
 class Serpent:
     def __init__(self, head):
@@ -48,7 +47,8 @@ class Serpent:
 
 def eat(serp):
     for i in range(30):
-        serp.rings.append(Anneau(serp.rings[-1]))
+        serp.rings.append(Anneau())
+        serp.rings[i].suivant = serp.rings[i+1]
 
 
 def dessine_serpent(posl, posh, largsnake, hautsnake):
@@ -69,7 +69,7 @@ def dessine_damier():
         longueur = 0
         hauteur += 20
 
-head = Anneau(suivant=None, larg=centerl, haut=centerh, flarg=centerl, fhaut=centerh, head=True)
+head = Anneau(suivant=None, larg=centerl, haut=centerh, flarg=centerl, fhaut=centerh)
 snake = Serpent(head)
 eat(snake)
 
@@ -91,28 +91,28 @@ while run:
                 if direction != "left":
                     direction = "right"
     if direction == "up":
-        head.haut -= 5
+        head.fhaut -= 5
     if direction == "down":
-        head.haut += 5
+        head.fhaut += 5
     if direction == "right":
-        head.larg += 5
+        head.flarg += 5
     if direction == "left":
-        head.larg -= 5
-    if head.haut < 0:
+        head.flarg -= 5
+    if head.fhaut < 0:
         print("Game Over")
-        head.larg, head.haut = long // 2, haut // 2
+        head.flarg, head.fhaut = long // 2, haut // 2
         direction = None
-    if head.haut > haut - hsnake:
+    if head.fhaut > haut - hsnake:
         print("Game Over")
-        head.larg, head.haut = long // 2, haut // 2
+        head.flarg, head.fhaut = long // 2, haut // 2
         direction = None
-    if head.larg > long - lsnake:
+    if head.flarg > long - lsnake:
         print("Game Over")
-        head.larg, head.haut = long // 2, haut // 2
+        head.flarg, head.fhaut = long // 2, haut // 2
         direction = None
-    if head.larg < 0:
+    if head.flarg < 0:
         print("Game Over")
-        head.larg, head.haut = long // 2, haut // 2
+        head.flarg, head.fhaut = long // 2, haut // 2
         direction = None
     clock.tick(60)
     dessine_damier()
