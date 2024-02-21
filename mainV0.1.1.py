@@ -52,7 +52,7 @@ class Serpent:
         :param head: un anneau de classe Anneau
         """
         self.head = head
-        self.rings = []
+        self.rings = []  #  J'utilise un tableau dynamique vu en cours pour gérer les anneaux du serpent
         self.rings.append(self.head)
 
     def update(self):
