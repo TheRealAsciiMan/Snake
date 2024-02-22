@@ -2,6 +2,7 @@ import pygame
 import socket
 from random import randint
 
+
 class Anneau:
     """
     Classe représentant un Anneau (pour les gouverner tous)
@@ -73,16 +74,19 @@ class Serpent:
         for ring in self.rings:
             ring.show()
 
-class Pomme():
+
+class Pomme:
     def __init__(self):
         self.xApp = None
         self.yApp = None
+
     def renew(self):
         self.xApp = randint(0, int((long - 20) // 20)) * 20
         self.yApp = randint(0, int((haut - 20) // 20)) * 20
 
     def show(self):
         surf.blit(apple_img, (self.xApp, self.yApp))
+
     def collision(self):
         global score1, score2
         if abs(self.xApp - head1.larg) <= 20 and abs(self.yApp - head1.haut) <= 20:
@@ -96,7 +100,8 @@ class Pomme():
             if joueur == 2:
                 self.renew()
 
-def eat(serp, taille:int=5, sound:bool=True):
+
+def eat(serp, taille: int = 5, sound: bool = True):
     """
     Fonction permettant d'ajouter "taille" (par défaut 5) anneaux qui se suivent de classe Anneaux à un serpent de classe Serpent
     :param serp: le serpent auquel on rajoute les "taille" anneaux
@@ -149,6 +154,7 @@ def dessine_damier():
         longueur = 0
         hauteur += 20
 
+
 def rends():
     """
     Fonction affichant le score du joueur en temps réel en haut à gauche de l'écran grâce à font la police préétablie et à score la variable qui compte le score
@@ -157,7 +163,6 @@ def rends():
     text2 = font.render("J2 : "+str(score2), True, (255, 255, 255))
     surf.blit(text1, (15, 5))
     surf.blit(text2, (long-120, 5))
-
 
 
 # Variables globales et initialisation
@@ -216,7 +221,6 @@ snake2 = Serpent(head2)
 eat(snake1, 4, False)
 eat(snake2, 4, False)
 font = pygame.font.Font('RnRFont.ttf', 32)
-
 
 
 while run:  #  Boucle du jeu
