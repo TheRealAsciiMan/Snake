@@ -144,7 +144,6 @@ def rends():
     """
     Fonction affichant le score du joueur en temps réel en haut à gauche de l'écran grâce à font la police préétablie et à score la variable qui compte le score
     """
-    global score
     text = font.render(str(score), True, (255, 255, 255))
     surf.blit(text, (15, 5))
 
@@ -246,9 +245,9 @@ while run:  #  Boucle du jeu
     clock.tick(60)   #  Boucle globale avec le nombre de fps (60)
     dessine_damier()
     rends()
-    apple.collision()
-    apple.show()
     snake.update()
     snake.show()
+    apple.collision()
+    apple.show()
     pygame.display.flip()
 pygame.quit()
